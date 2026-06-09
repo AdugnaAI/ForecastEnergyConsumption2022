@@ -290,6 +290,40 @@ jupyter notebook notebooks/Project6_Energy_Forecasting.ipynb
 - Walk-forward validation confirms real-world forecasting reliability
 - Residual analysis enables anomaly detection in electricity consumption
 
+
+---
+
+## Key Visualizations
+
+### Model Comparison
+
+![Model Comparison](results/figures/model_comparison_chart.png)
+
+### XGBoost: Actual vs Predicted
+
+![XGBoost Prediction](results/figures/xgboost_actual_vs_predicted.png)
+
+### Walk-Forward Forecasting
+
+![Walk Forward](results/figures/walk_forward_forecast.png)
+
+### Multi-Step Forecasting (24-Hour Horizon)
+
+![Multi-Step Forecast](results/figures/multistep_forecast_24h.png)
+
+### Transformer Attention Visualization
+
+![Attention](results/figures/attention_importance.png)
+
+### Residual-Based Anomaly Detection
+
+![Anomaly Detection](results/figures/anomaly_detection.png)
+
+### Seasonal Decomposition
+
+![Seasonal Decomposition](results/figures/seasonal_decomposition.png)
+
+
 ---
 
 # Author
