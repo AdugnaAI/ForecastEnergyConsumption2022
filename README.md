@@ -238,29 +238,19 @@ Findings:
 
 ---
 
-# Repository Structure
+## Repository Structure
 
-energy-forecasting-system
+Project126-energy-forecasting
 │
-├── notebooks
-│ └── Project6_Energy_Forecasting.ipynb
-│
-├── src
-│ ├── preprocessing.py
-│ ├── feature_engineering.py
-│ ├── xgboost_model.py
-│ ├── lstm_model.py
-│ ├── transformer_model.py
-│ ├── walk_forward.py
-│ ├── anomaly_detection.py
-│ └── trend_analysis.py
-│
-├── results
-│ ├── figures
-│ └── metrics
-│
+├── README.md
+├── LICENSE
 ├── requirements.txt
-└── README.md
+├── .gitignore
+├── Project126_energy-forecasting.ipynb
+│
+└── results
+    ├── figures
+    └── metrics
 
 
 ---
