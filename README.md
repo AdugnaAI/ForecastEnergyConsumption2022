@@ -287,31 +287,31 @@ jupyter notebook notebooks/Project6_Energy_Forecasting.ipynb
 
 ### Model Comparison
 
-![Model Comparison](results/figures/Model Comparation Chart.png)
+![Model Comparison](results/figures/model_comparison_chart.png)
 
 ### XGBoost: Actual vs Predicted
 
-![XGBoost Prediction](results/figures/XGBoost Actual vs Predicted.png)
+![XGBoost Prediction](results/figures/xgboost_actual_vs_predicted.png)
 
 ### Walk-Forward Forecasting
 
-![Walk Forward](results/figures/Walk-Forward Forecast Plot.png)
+![Walk Forward](results/figures/walk_forward_forecast.png)
 
 ### Multi-Step Forecasting (24-Hour Horizon)
 
-![Multi-Step Forecast](results/figures/Multi-step Forecast (24-hour).png)
+![Multi-Step Forecast](results/figures/multistep_forecast_24h.png)
 
 ### Transformer Attention Visualization
 
-![Attention](results/figures/Transformer Attention Plot.png)
+![Attention](results/figures/attention_importance.png)
 
 ### Residual-Based Anomaly Detection
 
-![Anomaly Detection](results/figures/Anomaly Detection Plot.png)
+![Anomaly Detection](results/figures/anomaly_detection.png)
 
 ### Seasonal Decomposition
 
-![Seasonal Decomposition](results/figures/Seasonal decomposition.png)
+![Seasonal Decomposition](results/figures/seasonal_decomposition.png)
 
 
 ---
