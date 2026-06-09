@@ -2,284 +2,272 @@
 
 ## Project Overview
 
-This project builds an **end-to-end explainable time series forecasting system** for predicting household electricity consumption.  
-Multiple forecasting approaches are compared, including **statistical models, machine learning, and deep learning architectures**.
+This project develops an end-to-end explainable time series forecasting system for predicting household electricity consumption. Multiple forecasting approaches are compared, including statistical models, machine learning models, and deep learning architectures.
 
-The system evaluates the performance of:
+The project evaluates and compares:
 
-- ARIMA / SARIMA
-- XGBoost
-- LSTM
-- Transformer
+* ARIMA
+* SARIMA
+* XGBoost
+* LSTM
+* Transformer
 
 In addition to forecasting, the project includes:
 
-- Walk-forward forecasting validation
-- Multi-step forecasting (24-hour ahead)
-- Residual-based anomaly detection
-- Transformer attention explainability
-- Trend and seasonal analysis
+* Walk-forward forecasting validation
+* Multi-step forecasting (24-hour ahead prediction)
+* Residual-based anomaly detection
+* Transformer attention explainability
+* Trend and seasonality analysis
 
 ---
 
-# Dataset
+## Dataset
 
-The project uses the **Individual Household Electric Power Consumption Dataset** from the UCI Machine Learning Repository.
+This project uses the **Individual Household Electric Power Consumption Dataset** from the UCI Machine Learning Repository.
 
-Dataset characteristics:
+### Dataset Characteristics
 
-- Time range: **2006 – 2010**
-- Frequency: **1-minute measurements**
-- Resampled to **hourly data**
-- ~35,000 hourly observations
+* Time range: **2006–2010**
+* Original frequency: **1-minute measurements**
+* Resampled frequency: **Hourly**
+* Approximately **35,000 hourly observations**
 
-Target variable:  Global_active_power
+### Target Variable
+
+`Global_active_power`
 
 ---
 
-# Data Pipeline
-
-The complete pipeline includes:
+## Data Pipeline
 
 ### Data Processing
 
-- Missing value handling
-- Hourly resampling
-- Train / validation / test split
-  
-       Train: 2006-12 → 2009-12
-  
-       Validation: 2010-01 → 2010-06
-  
-       Test: 2010-07 → 2010-11
+* Missing value handling
+* Datetime indexing
+* Hourly resampling
+* Train / Validation / Test split
+
+| Dataset    | Period             |
+| ---------- | ------------------ |
+| Train      | 2006-12 to 2009-12 |
+| Validation | 2010-01 to 2010-06 |
+| Test       | 2010-07 to 2010-11 |
 
 ### Feature Engineering
 
-Lag features
+#### Lag Features
 
-    lag_1
+```text
+lag_1
+lag_24
+lag_168
+```
 
-    lag_24
+#### Rolling Statistics
 
-    lag_168
+```text
+rolling_mean_24
+rolling_std_24
+```
 
-Rolling statistics
+#### Differencing
 
-    rolling_mean_24
+```text
+diff_1
+diff_24
+```
 
-    rolling_std_24
+#### Cyclical Encoding
 
-Differencing
+```text
+hour_sin
+hour_cos
+dow_sin
+dow_cos
+month_sin
+month_cos
+```
 
-    diff_1
+#### Regime Feature
 
-    diff_24
-
-Cyclical encoding
-
-    hour_sin / hour_cos
-
-    dow_sin / dow_cos
-
-    month_sin / month_cos
-
-Regime feature
-
-    weekend indicator
+```text
+weekend
+```
 
 ---
 
-# Models Implemented
+## Models Implemented
 
-## Baseline Persistence Model
+### Baseline Persistence Model
 
 Predicts the next value using the previous observation.
 
-Used as a **reference benchmark**.
+Used as a benchmark for comparison.
 
 ---
 
-## ARIMA / SARIMA
+### ARIMA / SARIMA
 
-Classical statistical time series models capturing:
+Classical statistical forecasting models that capture:
 
-- autoregressive patterns
-- moving average effects
-- seasonal components
+* Autoregressive behavior
+* Moving average effects
+* Seasonal patterns
 
 ---
 
-## XGBoost
+### XGBoost
 
 Gradient boosting model trained on engineered lag features.
 
 Advantages:
 
-- strong performance on tabular time series data
-- captures nonlinear relationships
-- robust with engineered features
+* Strong performance on tabular time-series data
+* Captures nonlinear relationships
+* Robust feature handling
 
 ---
 
-## LSTM
+### LSTM
 
 Long Short-Term Memory neural network designed for sequential data.
 
-Input: 24 hour sequence (LOOKBACK = 24)
+Configuration:
 
-Predicts: next hour (single step)
+```text
+LOOKBACK = 24
+```
+
+Input:
+
+```text
+Previous 24 hours
+```
+
+Output:
+
+```text
+Next hour prediction
+```
 
 ---
 
-## Transformer
+### Transformer
 
-Attention-based architecture that learns relationships across past observations.
+Attention-based neural network architecture that learns relationships among past observations.
 
-Benefits:
+Advantages:
 
-- captures long-range dependencies
-- interpretable via attention weights
+* Captures long-range dependencies
+* Provides explainability through attention weights
 
 ---
 
-# Model Evaluation
+## Model Evaluation
 
 Evaluation metrics:
 
-- MAE (Mean Absolute Error)
-- RMSE (Root Mean Squared Error)
+* MAE (Mean Absolute Error)
+* RMSE (Root Mean Squared Error)
 
-### Final Model Comparison
+### Final Model Performance
 
-| Model | MAE | RMSE |
-|------|------|------|
-| Baseline | 0.358 | 0.562 |
-| XGBoost | **0.017** | **0.029** |
-| SARIMA | 1.241 | 1.399 |
-| LSTM | 0.315 | 0.455 |
-| Transformer | 0.371 | 0.522 |
+| Model       | MAE       | RMSE      |
+| ----------- | --------- | --------- |
+| Baseline    | 0.358     | 0.562     |
+| XGBoost     | **0.017** | **0.029** |
+| SARIMA      | 1.241     | 1.399     |
+| LSTM        | 0.315     | 0.455     |
+| Transformer | 0.372     | 0.522     |
 
-**XGBoost achieved the best forecasting performance.**
+### Key Result
 
----
-
-# Walk-Forward Forecasting
-
-To simulate real-world deployment, the model was evaluated using **rolling walk-forward forecasting**.
-
-Training window: 2 years of data
-
-Prediction horizon: 1 week ahead
-
-Average performance:
-
-      MAE ≈ 0.018
-
-      RMSE ≈ 0.029
+**XGBoost achieved the best forecasting performance on this dataset.**
 
 ---
 
-This confirmed that the model maintains **stable performance over time**.
+## Walk-Forward Forecasting
+
+To simulate real-world deployment, the XGBoost model was evaluated using rolling walk-forward forecasting.
+
+### Configuration
+
+```text
+Training Window : 2 Years
+Prediction Horizon : 1 Week (168 Hours)
+```
+
+### Average Performance
+
+```text
+MAE  ≈ 0.018
+RMSE ≈ 0.029
+```
+
+The walk-forward results closely matched the original test performance, demonstrating strong temporal stability and generalization.
 
 ---
 
-# Multi-Step Forecasting
+## Multi-Step Forecasting
 
-A **24-hour ahead forecasting model** was implemented using LSTM.
+A 24-hour ahead forecasting model was implemented using LSTM.
 
+### Configuration
+
+```text
 LOOKBACK = 24
-HORIZON = 24
+HORIZON  = 24
+```
 
-The model predicts the entire next day of electricity consumption.
-
----
-
-# Explainability
-
-Transformer attention weights were extracted to understand **which past hours influence predictions most**.
-
-The model learned strong importance for: 24-hour lag (daily consumption pattern)
-
-
-This confirms the presence of **daily periodic behavior** in electricity usage.
+The model predicts the entire next day of electricity consumption from the previous 24 hours.
 
 ---
 
-# Anomaly Detection
+## Explainability
 
-Anomaly detection was performed using **forecast residuals**.
+Transformer attention weights were extracted to identify which past observations most influenced predictions.
 
-Steps:
+### Key Finding
+
+The model assigned the highest attention to:
+
+```text
+24-hour lag
+```
+
+This indicates that daily periodicity is a dominant factor in household electricity consumption.
+
+---
+
+## Anomaly Detection
+
+Anomaly detection was performed using forecast residuals.
+
+### Process
 
 1. Forecast consumption
 2. Compute residuals
 
-     Residual = Actual − Predicted
+```text
+Residual = Actual − Predicted
+```
 
+3. Detect outliers using residual thresholds
 
-3. Identify outliers beyond a threshold
-
-Detected anomalies correspond to **unusual spikes in energy consumption**.
-
----
-
-# Trend and Seasonality Analysis
-
-Trend and seasonal components were analyzed using:
-
-- moving averages
-- seasonal decomposition
-
-Findings:
-
-- strong **daily cycle**
-- noticeable **seasonal patterns**
-- stable long-term trend
+Detected anomalies correspond to unusual spikes or drops in electricity usage.
 
 ---
 
-## Repository Structure
+## Trend and Seasonality Analysis
 
-Project126-energy-forecasting
-│
-├── README.md
-├── LICENSE
-├── requirements.txt
-├── .gitignore
-├── Project126_energy-forecasting.ipynb
-│
-└── results
-    ├── figures
-    └── metrics
+Trend and seasonal behavior were analyzed using moving averages and seasonal decomposition.
 
+### Findings
 
----
-
-## Visualizations
-Include:
-- XGBoost learning curve
-- Actual vs predicted plots
-- Walk-forward forecast error over time
-- Transformer attention importance
-- Residual-based anomaly detection
-- Trend analysis and STL decomposition
-
-## How to Run
-```bash
-pip install -r requirements.txt
-jupyter notebook notebooks/Project6_Energy_Forecasting.ipynb
-
-
----
-
-# Key Takeaways
-
-- Machine learning models outperform classical time series models on this dataset
-- XGBoost provided the best performance
-- Transformer attention enables model interpretability
-- Walk-forward validation confirms real-world forecasting reliability
-- Residual analysis enables anomaly detection in electricity consumption
-
+* Strong daily cycle
+* Clear seasonal patterns
+* Stable long-term consumption trend
 
 ---
 
@@ -313,14 +301,74 @@ jupyter notebook notebooks/Project6_Energy_Forecasting.ipynb
 
 ![Seasonal Decomposition](results/figures/seasonal_decomposition.png)
 
+---
+
+## Repository Structure
+
+```text
+Project126-energy-forecasting
+│
+├── README.md
+├── LICENSE
+├── requirements.txt
+├── .gitignore
+├── Project126_energy-forecasting.ipynb
+│
+└── results
+    ├── figures
+    │   ├── model_comparison_chart.png
+    │   ├── xgboost_actual_vs_predicted.png
+    │   ├── walk_forward_forecast.png
+    │   ├── multistep_forecast_24h.png
+    │   ├── attention_importance.png
+    │   ├── anomaly_detection.png
+    │   └── seasonal_decomposition.png
+    │
+    └── metrics
+        └── model_comparison.csv
+```
 
 ---
 
-# Author
+## How to Run
 
-Adugna Woldemedhin
+Install required packages:
 
-Data Engineering | Machine Learning | Time Series Forecasting | AI
+```bash
+pip install -r requirements.txt
+```
+
+Launch Jupyter Notebook:
+
+```bash
+jupyter notebook
+```
+
+Open:
+
+```text
+Project126_energy-forecasting.ipynb
+```
+
+---
+
+## Key Takeaways
+
+* Machine learning models outperformed classical statistical models on this dataset.
+* XGBoost achieved the best overall forecasting accuracy.
+* Walk-forward validation confirmed model stability over time.
+* Transformer attention improved model interpretability.
+* Residual analysis enabled anomaly detection.
+* Multi-step forecasting demonstrated day-ahead prediction capability.
+
+---
+
+## Author
+
+**Adugna Woldemedhin**
+
+Data Engineering | Machine Learning | Time Series Forecasting | Artificial Intelligence
+
 
 
 
